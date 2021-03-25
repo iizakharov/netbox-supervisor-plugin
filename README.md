@@ -65,33 +65,6 @@ Circuits, the later one is for assigning and managing supervisor-to-Tenant
 connections. For more information, refer to `/api/docs` as it also conforms
 to Swagger Specification for hosted visual documentations.
 
-## Developing
-
-Plugins are essentially self-contained Django apps which integrate with NetBox
-to provide custom functionality. For more information, see [NetBox
-documentation](https://netbox.readthedocs.io/en/stable/plugins/development/).
-
-To help setup the development environment, it comes with a CLI helper
-based on `Makefile`, including the following commands:
-```
-changelog        Generate a changelog file from GitHub Issue Tracker
-clean            Clean up build artifacts
-deploy           Run a local development deployment of the plugin with NetBox
-docker           Build a local docker image
-github-tag       Create and push a tag with the current version
-help             Print usage information
-migrate          Run makemigrations in Django and produce a migration file locally
-release          Package and distribute the current release to PyPI
-test             Run unit tests
-version          Print the version
-```
-
-That said, one can simply build and run a local development image of the plugin
-with NetBox with a single line:
-```
-make build && make deploy
-```
-
 The application will be available after a few minutes at
 `http://0.0.0.0:8000/`. The default credentials are:
 - Username: **admin**
