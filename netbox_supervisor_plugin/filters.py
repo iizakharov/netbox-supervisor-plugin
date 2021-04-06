@@ -1,8 +1,8 @@
 import django_filters
 from django.db.models import Q
 
-from utilities.filters import NameSlugSearchFilterSet
-
+from utilities.filters import NameSlugSearchFilterSet, TreeNodeMultipleChoiceFilter
+from tenancy.models import Tenant
 from .models import Supervisor
 
 
@@ -12,11 +12,26 @@ class SupervisorFilter(NameSlugSearchFilterSet):
         label="Поиск",
     )
 
+    # tenant_id = django_filters.ModelMultipleChoiceFilter(
+    #     field_name='tenant',
+    #     queryset=Tenant.objects.all(),
+    #     label='Учреждение',
+    # )
+    # tenant = django_filters.ModelMultipleChoiceFilter(
+    #     field_name='tenant__slug',
+    #     queryset=Tenant.objects.all(),
+    #     to_field_name='slug',
+    #     label='Учреждение (slug)',
+    # )
+
     class Meta:
         model = Supervisor
         fields = [
             'status',
             'email',
+            'phone',
+            'tenant',
+            'tenants',
             'comments',
         ]
 

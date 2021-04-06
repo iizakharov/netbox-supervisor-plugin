@@ -12,7 +12,7 @@ urlpatterns = (
     path('<int:pk>/delete/', views.SupervisorDeleteView.as_view(), name='supervisor_delete'),
 
     # SupervisorTenant connections.
-    path("vlan/", views.SupervisorTenantListView.as_view(), name='supervisor_tenant_list'),
-    path("vlan/add/", views.SupervisorTenantCreateView.as_view(), name='supervisor_tenant_add'),
-    path("vlan/delete/", views.SupervisorTenantBulkDeleteView.as_view(), name='supervisor_tenant_bulk_delete'),
+    path("tenant/", views.SupervisorTenantListView.as_view(), name='supervisor_tenant_list'),
+    path("tenant/add/", views.SupervisorTenantCreateView.as_view(), name='supervisor_tenant_add'),
+    path("tenant/delete/", views.SupervisorTenantBulkDeleteView.as_view(), name='supervisor_tenant_bulk_delete'),
 )

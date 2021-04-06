@@ -7,13 +7,9 @@ class VirtualCircuitStatusChoices(ChoiceSet):
     STATUS_PENDING_CONFIGURATION = 'pending-configuration'
     STATUS_CONFIGURED = 'configured'
     STATUS_CONFIGURATION_ERROR = 'configuration-error'
-    STATUS_PENDING_DEACTIVATION = 'pending-deactivation'
-    STATUS_DEACTIVATED = 'deactivated'
 
     CHOICES = (
-        (STATUS_PENDING_CONFIGURATION, 'Ожидает'),
-        (STATUS_CONFIGURED, 'Настроен'),
-        (STATUS_CONFIGURATION_ERROR, 'Ошибка'),
-        (STATUS_PENDING_DEACTIVATION, 'В ожидании отключения'),
-        (STATUS_DEACTIVATED, 'Отключен'),
+        (STATUS_PENDING_CONFIGURATION, 'Ответственный за ИТ'),
+        (STATUS_CONFIGURED, 'Ответственный за ИБ'),
+        (STATUS_CONFIGURATION_ERROR, 'Ответственный за сеть'),
     )

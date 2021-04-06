@@ -9,7 +9,12 @@ class SupervisorTable(BaseTable):
     pk = ToggleColumn()
     sid = tables.LinkColumn(
         viewname='plugins:netbox_supervisor_plugin:supervisor',
-        args=[Accessor('sid')]
+        args=[Accessor('id')]
+    )
+
+    tenant = tables.LinkColumn(
+        viewname='tenancy:tenant',
+        args=[Accessor('tenant.slug')]
     )
 
     class Meta(BaseTable.Meta):
@@ -20,6 +25,8 @@ class SupervisorTable(BaseTable):
             'name',
             'email',
             'phone',
+            'tenant',
+            'tenants',
             'status',
             'comments',
             'is_active',
@@ -30,11 +37,11 @@ class SupervisorTenantTable(BaseTable):
     pk = ToggleColumn()
     supervisor = tables.LinkColumn(
         viewname='plugins:netbox_supervisor_plugin:supervisor',
-        args=[Accessor('supervisor.sid')]
+        args=[Accessor('supervisor.id')]
     )
     tenant = tables.LinkColumn(
         viewname='tenancy:tenant',
-        args=[Accessor('tenant.pk')]
+        args=[Accessor('tenant.slug')]
     )
 
     class Meta(BaseTable.Meta):

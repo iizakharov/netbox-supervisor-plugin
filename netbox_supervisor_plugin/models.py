@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from tenancy.models import Tenant
@@ -7,18 +9,28 @@ from extras.models import ChangeLoggedModel
 from .choices import VirtualCircuitStatusChoices
 
 
-# SUPERVISOR
 class Supervisor(ChangeLoggedModel):
-    """VSupervisor model."""
+    """Supervisor model."""
 
-    sid = models.BigIntegerField(
-        primary_key=True,
+    sid = models.CharField(
         verbose_name='Код организации',
-        validators=[
-            MaxValueValidator(99999999),
-            MinValueValidator(1),
-        ],
+        max_length=8,
+        unique=True
     )
+
+    tenant = models.ForeignKey(
+        to=Tenant,
+        on_delete=models.CASCADE,
+        related_name='supervisor',
+        verbose_name='Основное учреждение',
+    )
+    tenants = models.ManyToManyField(
+        to=Tenant,
+        related_name='tenants_all',
+        verbose_name='Дополнительные учреждения',
+        blank=True
+    )
+
     name = models.CharField(
         max_length=64,
         verbose_name='ФИО',
@@ -32,7 +44,7 @@ class Supervisor(ChangeLoggedModel):
     )
     status = models.CharField(
         max_length=30,
-        verbose_name='Статус',
+        verbose_name='Роль',
         choices=VirtualCircuitStatusChoices,
         default=VirtualCircuitStatusChoices.STATUS_PENDING_CONFIGURATION,
     )
@@ -49,11 +61,23 @@ class Supervisor(ChangeLoggedModel):
         verbose_name_plural = 'Ответственные'
 
     def __str__(self):
-        return f'{self.sid} ({self.name})'
+        return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse('plugins:netbox_supervisor_plugin:supervisor', args=[self.sid])
+        return reverse('plugins:netbox_supervisor_plugin:supervisor', args=[self.pk])
 
+    def get_extra_tenant(self):
+        tenants = []
+        if self.tenants:
+            for tenant in self.tenants.all():
+                tenants.append(tenant)
+            return tenants
+        else:
+            return None
+
+# from netbox_supervisor_plugin.models import Supervisor
+# s = Supervisor.objects.filter(id=1)
+# arr = s.get_extra_tenant()
 
 class SupervisorTenant(ChangeLoggedModel):
     """Supervisor to Tenant relationship."""
@@ -61,13 +85,14 @@ class SupervisorTenant(ChangeLoggedModel):
     supervisor = models.ForeignKey(
         to=Supervisor,
         on_delete=models.CASCADE,
-        related_name='tenants',
+        related_name='tenantss',
         verbose_name='Ответственный',
     )
-    tenant = models.OneToOneField(
+
+    tenant = models.ForeignKey(
         to=Tenant,
         on_delete=models.CASCADE,
-        related_name='supervisor',
+        related_name='supervisors',
         verbose_name='Учреждение',
     )
 
@@ -77,4 +102,24 @@ class SupervisorTenant(ChangeLoggedModel):
         verbose_name_plural = 'Связи ответственных'
 
     def get_absolute_url(self):
-        return reverse('plugins:netbox_supervisor_plugin:supervisor', args=[self.supervisor.sid])
+        return reverse('plugins:netbox_supervisor_plugin:supervisor', args=[self.supervisor.id])
+
+
+# @receiver(post_save, sender=Supervisor)
+# def save_tsup_ten(sender, *args, **kwargs):
+#     print('*'*30)
+#     superv = Supervisor.objects.all()
+#     test = Supervisor.objects.all().order_by('-id')[0]
+#     print(test)
+#     print(test.id)
+#     test = Supervisor.objects.all().last()
+#     print(test)
+#     print(test.tenant.id)
+#     # print(sender)
+#     # print(sender.tenant)
+#     print('*' * 30)
+#     # print(self.id)
+#     # tenant = Tenant.objects.filter(pk=self.tenant.id)
+#     # print(tenant)
+#     SupervisorTenant.objects.create(supervisor_id=test.id,
+#                                     tenant_id=test.tenant.id)

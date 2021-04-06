@@ -14,7 +14,7 @@ class SupervisorView(View):
     """Single supervisor view, identified by ID."""
 
     def get(self, request, pk):
-        sp = get_object_or_404(Supervisor.objects.filter(sid=pk))
+        sp = get_object_or_404(Supervisor.objects.filter(pk=pk))
         tenant_ids = SupervisorTenant.objects.filter(supervisor=sp).values_list('tenant_id', flat=True)
         tenants = [Tenant.objects.get(pk=tid) for tid in tenant_ids]
 
@@ -26,7 +26,6 @@ class SupervisorView(View):
 
 class SupervisorListView(PermissionRequiredMixin, ObjectListView):
     permission_required = 'netbox_supervisor_plugin.view_supervisor'
-    #permission_required = 'netbox_supervisor_plugin.view_virtualcircuit'
     queryset = Supervisor.objects.all()
     filterset = SupervisorFilter
     filterset_form = SupervisorFilterForm

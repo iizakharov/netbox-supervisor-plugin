@@ -5,7 +5,7 @@ class SupervisorConfig(PluginConfig):
     """This class defines attributes for the NetBox Virtual Circuit Plugin."""
 
     name = 'netbox_supervisor_plugin'
-    verbose_name = 'Supervisors'
+    verbose_name = 'Ответственные учреждений'
     description = 'Netbox Supervisor Plugin'
     version = '0.1'
     base_url = 'supervisor'
