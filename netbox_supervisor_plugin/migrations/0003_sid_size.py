@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='supervisor',
             name='sid',
-            field=models.BigIntegerField(primary_key=True, serialize=False, validators=[django.core.validators.MaxValueValidator(99999999), django.core.validators.MinValueValidator(1)]),
+            field=models.CharField(max_length=8, unique=True),
         ),
     ]
