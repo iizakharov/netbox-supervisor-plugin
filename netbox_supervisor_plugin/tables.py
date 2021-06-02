@@ -14,7 +14,7 @@ class SupervisorTable(BaseTable):
 
     tenant = tables.LinkColumn(
         viewname='tenancy:tenant',
-        args=[Accessor('tenant.slug')]
+        args=[Accessor('tenant.id')]
     )
 
     class Meta(BaseTable.Meta):
@@ -41,7 +41,7 @@ class SupervisorTenantTable(BaseTable):
     )
     tenant = tables.LinkColumn(
         viewname='tenancy:tenant',
-        args=[Accessor('tenant.slug')]
+        args=[Accessor('tenant.id')]
     )
 
     class Meta(BaseTable.Meta):

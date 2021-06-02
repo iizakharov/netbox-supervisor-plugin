@@ -50,15 +50,14 @@
                     </tr>
                     <tr>
                         <td>Основное учреждение</td>
-                        <td><a href="{% url 'tenancy:tenant_list' %}{{ supervisor.tenant.slug }}">{{ supervisor.tenant.name }}</a></td>
+                        <td><a href="{% url 'tenancy:tenant_list' %}{{ supervisor.tenant.id }}">{{ supervisor.tenant.name }}</a></td>
                     </tr>
                     {% if supervisor.tenants %}
                     <tr>
                         <td>Дополнительные учреждения</td>
                         <td>{% for item in supervisor.tenants.all %}
-                            <a href="{% url 'tenancy:tenant_list' %}{{ item.slug }}">{{ item.name }}</a>
+                            <a href="{% url 'tenancy:tenant_list' %}{{ item.id }}">{{ item.name }}</a>
                         {% endfor %}</td>
-
                     </tr>
                     {% endif %}
                     <tr>
@@ -76,38 +75,6 @@
                 </table>
             </div>
         </div>
-
-<!--        <div class="col-md-8">-->
-<!--            <div class="panel panel-default">-->
-<!--                <table class="table table-hover panel-body attr-table">-->
-<!--                    <tr style="background-color:#f8f8f8;">-->
-<!--                        <th>Дополнительные учреждения</th>-->
-<!--                        <th>Группа учреждений</th>-->
-<!--                    </tr>-->
-<!--                    {% for tenant in tenants %}-->
-<!--                    <tr>-->
-<!--                        <td><a href="{% url 'tenancy:tenant_list' %}{{ tenant.slug }}">{{ tenant.name }}</a></td>-->
-<!--                        {% if tenant.group %}-->
-<!--                            <td><a href="{{ tenant.group.get_absolute_url }}">{{ tenant.group }}</a></td>-->
-<!--                        {% else %}-->
-<!--                            <td><span class="text-muted">Нет</span></td>-->
-<!--                        {% endif %}-->
-<!--                    </tr>-->
-<!--                    {% empty %}-->
-<!--                    <tr>-->
-<!--                        <td class="text-muted">Дополнительных учреждение под ответственность не назначено!</td>-->
-<!--                        <td></td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </table>-->
-<!--            </div>-->
-<!--            <div class="pull-right noprint">-->
-<!--                <a href="{% url 'plugins:netbox_supervisor_plugin:supervisor_tenant_add' %}?supervisor={{ supervisor.id }}" class="btn btn-primary btn-xs">-->
-<!--                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
-<!--                    Создать связь с учреждением-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 {% endwith %}
 {% endblock %}

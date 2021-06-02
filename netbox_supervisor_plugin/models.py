@@ -4,7 +4,11 @@ from django.dispatch import receiver
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from tenancy.models import Tenant
-from extras.models import ChangeLoggedModel
+#try:
+#    from extras.models import ChangeLoggedModel
+#except:
+#    from netbox.models import ChangeLoggedModel
+from netbox.models import ChangeLoggedModel
 
 from .choices import VirtualCircuitStatusChoices
 
@@ -75,9 +79,6 @@ class Supervisor(ChangeLoggedModel):
         else:
             return None
 
-# from netbox_supervisor_plugin.models import Supervisor
-# s = Supervisor.objects.filter(id=1)
-# arr = s.get_extra_tenant()
 
 class SupervisorTenant(ChangeLoggedModel):
     """Supervisor to Tenant relationship."""
@@ -104,22 +105,3 @@ class SupervisorTenant(ChangeLoggedModel):
     def get_absolute_url(self):
         return reverse('plugins:netbox_supervisor_plugin:supervisor', args=[self.supervisor.id])
 
-
-# @receiver(post_save, sender=Supervisor)
-# def save_tsup_ten(sender, *args, **kwargs):
-#     print('*'*30)
-#     superv = Supervisor.objects.all()
-#     test = Supervisor.objects.all().order_by('-id')[0]
-#     print(test)
-#     print(test.id)
-#     test = Supervisor.objects.all().last()
-#     print(test)
-#     print(test.tenant.id)
-#     # print(sender)
-#     # print(sender.tenant)
-#     print('*' * 30)
-#     # print(self.id)
-#     # tenant = Tenant.objects.filter(pk=self.tenant.id)
-#     # print(tenant)
-#     SupervisorTenant.objects.create(supervisor_id=test.id,
-#                                     tenant_id=test.tenant.id)

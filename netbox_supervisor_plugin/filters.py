@@ -1,9 +1,27 @@
 import django_filters
 from django.db.models import Q
 
-from utilities.filters import NameSlugSearchFilterSet, TreeNodeMultipleChoiceFilter
+from utilities.filters import TreeNodeMultipleChoiceFilter
 from tenancy.models import Tenant
 from .models import Supervisor
+
+
+class NameSlugSearchFilterSet(django_filters.FilterSet):
+    """
+    A base class for adding the search method to models which only expose the `name` and `slug` fields
+    """
+    q = django_filters.CharFilter(
+        method='search',
+        label='Search',
+    )
+
+    def search(self, queryset, name, value):
+        if not value.strip():
+            return queryset
+        return queryset.filter(
+            models.Q(name__icontains=value) |
+            models.Q(slug__icontains=value)
+        )
 
 
 class SupervisorFilter(NameSlugSearchFilterSet):
@@ -11,18 +29,6 @@ class SupervisorFilter(NameSlugSearchFilterSet):
         method="search",
         label="Поиск",
     )
-
-    # tenant_id = django_filters.ModelMultipleChoiceFilter(
-    #     field_name='tenant',
-    #     queryset=Tenant.objects.all(),
-    #     label='Учреждение',
-    # )
-    # tenant = django_filters.ModelMultipleChoiceFilter(
-    #     field_name='tenant__slug',
-    #     queryset=Tenant.objects.all(),
-    #     to_field_name='slug',
-    #     label='Учреждение (slug)',
-    # )
 
     class Meta:
         model = Supervisor
